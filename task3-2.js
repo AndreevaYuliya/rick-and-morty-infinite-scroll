@@ -20,6 +20,8 @@ const nextBtn = document.querySelector(".next");
 
 const upButton = document.querySelector(".upButton");
 
+// const LOAD_DELAY_MS = 5000;
+
 async function loadPage(page) {
   let hadError = false;
 
@@ -34,6 +36,10 @@ async function loadPage(page) {
   nextBtn.disabled = true;
 
   try {
+    // if (LOAD_DELAY_MS) {
+    //   await new Promise((resolve) => setTimeout(resolve, LOAD_DELAY_MS));
+    // }
+
     const response = await fetch(`${baseUrl}?page=${page}`);
 
     if (!response.ok) {
