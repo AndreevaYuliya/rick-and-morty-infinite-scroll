@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <title>Rick and Morty</title>
+  </head>
+
+  <body>
+    <header>
+      <h1 class="title">Characters</h1>
+    </header>
+
+    <section id="characters">
+      <div id="loader" class="loader"></div>
+
+      <div id="errorContainer">
+        <h2 id="errorText">Failed to load characters. Please try again.</h2>
+      </div>
+
+      <div id="characterList"></div>
+
+      <template id="characterTemplate">
+        <article id="characterContainer">
+          <img id="image" src="" alt="Character Image" />
+
+          <div class="informationContainer">
+            <div>
+              <span id="name">Name: </span>
+              <span id="nameValue"></span>
+            </div>
+
+            <div>
+              <span id="status">Status:</span>
+              <span id="statusValue"></span>
+            </div>
+          </div>
+        </article>
+      </template>
+    </section>
+
+    <section>
+      <button id="upButton" class="upButton">
+        <div id="arrow" class="arrow"></div>
+        <h5>UP</h5>
+      </button>
+    </section>
+
+    <footer id="footer">
+      <button id="prev" class="prev"><h3>Prev page</h3></button>
+      <span id="current" class="current">{current}</span>
+      <button id="next" class="next"><h3>Next page</h3></button>
+    </footer>
+
+    <script src="task3-1.js"></script>
+    <script src="task3-2.js"></script>
+  </body>
+</html>
