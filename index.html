@@ -14,29 +14,29 @@
       <h1 class="title">Characters</h1>
     </header>
 
-    <section id="characters">
-      <div id="loader" class="loader"></div>
+    <section id="characters" class="characters">
+      <div id="preloader" class="preloader"></div>
 
-      <div id="errorContainer">
+      <div id="overlayLoader" class="overlayLoader">
+        <div id="overlaySpinner" class="preloader"></div>
+      </div>
+
+      <div id="errorContainer" class="errorContainer">
         <h2 id="errorText">Failed to load characters. Please try again.</h2>
       </div>
 
-      <div id="characterList"></div>
+      <div id="characterList" class="characterList"></div>
 
       <template id="characterTemplate">
-        <article id="characterContainer">
-          <img id="image" src="" alt="Character Image" />
+        <article class="characterContainer" data-character-id="">
+          <img data-role="image" src="" alt="Character Image" />
 
           <div class="informationContainer">
-            <div>
-              <span id="name">Name: </span>
-              <span id="nameValue"></span>
-            </div>
+            <span class="name">Name: </span>
+            <span data-role="nameValue"></span>
 
-            <div>
-              <span id="status">Status:</span>
-              <span id="statusValue"></span>
-            </div>
+            <span class="status">Status:</span>
+            <span data-role="statusValue"></span>
           </div>
         </article>
       </template>
@@ -49,13 +49,30 @@
       </button>
     </section>
 
-    <footer id="footer">
-      <button id="prev" class="prev"><h3>Prev page</h3></button>
-      <span id="current" class="current">{current}</span>
-      <button id="next" class="next"><h3>Next page</h3></button>
-    </footer>
+    <dialog id="modal">
+      <div id="modalContent" class="modalContent">
+        <div id="modalBody"></div>
 
-    <script src="task3-1.js"></script>
-    <script src="task3-2.js"></script>
+        <template id="modalTemplate">
+          <section id="modalCharacterContainer" class="modalCharacterContainer">
+            <span data-role="nameValue" class="nameValue"></span>
+
+            <img data-role="image" src="" alt="Character Image" class="image" />
+
+            <div>
+              <span class="status">Status:</span>
+              <span data-role="statusValue"></span>
+            </div>
+          </section>
+        </template>
+      </div>
+
+      <section id="modalFooter" class="modalFooter">
+        <button id="closeModal" class="closeModal">
+          <h3>Close</h3>
+        </button>
+      </section>
+    </dialog>
+    <script src="task4.js"></script>
   </body>
 </html>

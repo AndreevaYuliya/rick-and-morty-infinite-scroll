@@ -7,13 +7,13 @@
 body {
   min-height: 100vh;
   padding-top: 58px;
-  padding-bottom: 58px;
   display: flex;
   flex-direction: column;
   background-color: rgba(144, 238, 144, 0.3);
 }
 
 header {
+  z-index: 999;
   height: 58px;
   box-sizing: border-box;
   background-color: lightgreen;
@@ -29,10 +29,11 @@ header {
   cursor: pointer;
 }
 
-.loader {
-  display: flex;
+.preloader {
+  display: none;
   flex: 1;
   width: fit-content;
+  margin-top: 58px;
   align-self: center;
   align-items: center;
   font-size: 48px;
@@ -41,7 +42,7 @@ header {
   clip-path: inset(0 3ch 0 0);
   animation: l4 1s steps(4) infinite;
 }
-.loader:before {
+.preloader:before {
   content: "Loading...";
 }
 @keyframes l4 {
@@ -50,58 +51,146 @@ header {
   }
 }
 
-#errorContainer {
+.overlayLoader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(000, 000, 000, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
+.overlayLoader .preloader {
   display: flex;
+  flex: 0 0 auto;
+  width: fit-content;
+  align-self: center;
+  clip-path: inset(0 3ch 0 0);
+  animation: l4 1s steps(4) infinite;
+}
+
+.errorContainer {
+  display: none;
   flex: 1;
   justify-content: center;
   align-items: center;
   color: red;
 }
 
-#characters {
-  display: flex !important;
-  flex: 1;
-  flex-direction: column;
-  gap: 15px;
-  padding: 15px;
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
 }
 
-#characterList {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-article {
-  display: flex;
-  flex-direction: row;
-  background-color: #f3f3f3;
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  border: none;
   border-radius: 10px;
+  box-shadow: 0 0 10px darkgreen;
+  background-color: #f3f3f3;
 }
 
-.informationContainer {
-  margin: 10px;
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid darkgreen;
   font-size: 18px;
   color: darkgreen;
 }
 
-#name,
-#status {
-  font-weight: bold;
+.modalCharacterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-footer {
-  height: 58px;
-  box-sizing: border-box;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.modalFooter {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 50px;
-  background-color: lightgreen;
+  padding: 15px;
+}
+
+.characters {
+  display: flex !important;
+  flex: 1;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px;
+}
+
+.characterList {
+  display: grid;
+  gap: 30px;
+}
+
+article {
+  display: grid;
+  grid-template-columns: minmax(0, 21%) 1fr;
+  grid-template-areas: "image info";
+  column-gap: 15px;
+  background-color: #f3f3f3;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  cursor: pointer;
+}
+
+article:hover {
+  box-shadow: 0 0 10px darkgreen;
+  transform: scale(1.02);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.informationContainer {
+  display: grid;
+  grid-template-areas:
+    "name nameValue"
+    "status statusValue";
+  grid-template-rows: min-content min-content;
+  grid-template-columns: max-content auto;
+  margin-top: 10px;
+  font-size: clamp(13px, 2vw, 17px);
+  gap: clamp(6px, 1.5vw, 10px);
+  color: darkgreen;
+  grid-area: info;
+}
+
+img {
+  width: 100%;
+  grid-area: image;
+}
+
+.name {
+  font-weight: bold;
+  grid-area: name;
+}
+
+.status {
+  font-weight: bold;
+  grid-area: status;
+}
+
+.nameValue {
+  text-align: center;
+  grid-area: nameValue;
+}
+
+.statusValue {
+  grid-area: statusValue;
+}
+
+.name,
+.status {
+  font-weight: bold;
 }
 
 button {
@@ -110,6 +199,7 @@ button {
   color: #f3f3f3;
   padding: 5px 10px;
   border: none;
+  outline: none;
   font-weight: bold;
 }
 
@@ -123,12 +213,6 @@ button:disabled {
   background-color: transparent;
   color: #7c978c;
   cursor: not-allowed;
-}
-
-.current {
-  font-size: 20px;
-  color: #fff;
-  text-shadow: #000 1px 1px 1px;
 }
 
 .upButton {
@@ -182,4 +266,51 @@ button:disabled {
     38% 46%,
     7% 46%
   );
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 42px;
+  }
+
+  header {
+    height: 42px;
+  }
+
+  h1 {
+    font-size: 16px;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  .preloader {
+    font-size: 32px;
+    margin-top: 42px;
+  }
+
+  .modalContent {
+    font-size: 16px;
+  }
+
+  .modalFooter {
+    padding: 6px;
+  }
+
+  article {
+    grid-template-columns: 30% 1fr;
+  }
+
+  .upButton {
+    width: 40px;
+    height: 40px;
+    bottom: 100px;
+    right: 20px;
+  }
+
+  .arrow {
+    width: 15px;
+    height: 20px;
+  }
 }
