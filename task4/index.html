@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <title>Rick and Morty</title>
+  </head>
+
+  <body>
+    <header>
+      <h1 class="title">Characters</h1>
+    </header>
+
+    <section id="characters" class="characters">
+      <div id="preloader" class="preloader"></div>
+
+      <div id="overlayLoader" class="overlayLoader">
+        <div id="overlaySpinner" class="preloader"></div>
+      </div>
+
+      <div id="errorContainer" class="errorContainer">
+        <h2 id="errorText">Failed to load characters. Please try again.</h2>
+      </div>
+
+      <div id="characterList" class="characterList"></div>
+
+      <template id="characterTemplate">
+        <article class="characterContainer" data-character-id="">
+          <img data-role="image" src="" alt="Character Image" />
+
+          <div class="informationContainer">
+            <span class="name">Name: </span>
+            <span data-role="nameValue"></span>
+
+            <span class="status">Status:</span>
+            <span data-role="statusValue"></span>
+          </div>
+        </article>
+      </template>
+    </section>
+
+    <section>
+      <button id="upButton" class="upButton">
+        <div id="arrow" class="arrow"></div>
+        <h5>UP</h5>
+      </button>
+    </section>
+
+    <dialog id="modal">
+      <div id="modalContent" class="modalContent">
+        <div id="modalBody"></div>
+
+        <template id="modalTemplate">
+          <section id="modalCharacterContainer" class="modalCharacterContainer">
+            <span data-role="nameValue" class="nameValue"></span>
+
+            <img data-role="image" src="" alt="Character Image" class="image" />
+
+            <div>
+              <span class="status">Status:</span>
+              <span data-role="statusValue"></span>
+            </div>
+          </section>
+        </template>
+      </div>
+
+      <section id="modalFooter" class="modalFooter">
+        <button id="closeModal" class="closeModal">
+          <h3>Close</h3>
+        </button>
+      </section>
+    </dialog>
+    <script src="task4.js"></script>
+  </body>
+</html>
