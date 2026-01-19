@@ -18,12 +18,9 @@ const errorText = document.getElementById("errorText");
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modalBody");
 const modalTemplate = document.getElementById("modalTemplate");
-const closeModalButton = document.getElementById("closeModal");
 
 const characterList = document.getElementById("characterList");
 const template = document.getElementById("characterTemplate");
-
-const goHome = document.querySelector("header h1.title");
 
 const upButton = document.querySelector(".upButton");
 
@@ -141,7 +138,7 @@ async function getCharacter(id) {
     return data;
   } catch (error) {
     throw new Error(
-      error?.message || "Failed to load character details. Please try again."
+      error?.message || "Failed to load character details. Please try again.",
     );
   }
 }
@@ -153,56 +150,63 @@ function topFunction() {
   setTimeout(() => upButton.classList.remove("visible"), 200);
 }
 
-characterList.addEventListener("click", async (event) => {
-  const article = event.target.closest("[data-character-id]");
+document.addEventListener("click", async (event) => {
+  const target = event.target;
+  const article = target.closest("[data-character-id]");
 
-  if (!article) {
+  if (article && characterList.contains(article)) {
+    event.stopPropagation();
+
+    try {
+      const character = await getCharacter(article.dataset.characterId);
+
+      const modalCard = modalTemplate.content.cloneNode(true);
+
+      const modalImage = modalCard.querySelector('[data-role="image"]');
+      const modalNameValue = modalCard.querySelector('[data-role="nameValue"]');
+
+      const modalStatusValue = modalCard.querySelector(
+        '[data-role="statusValue"]',
+      );
+
+      if (modalImage) {
+        modalImage.src = character.image;
+        modalImage.alt = character.name;
+      }
+
+      if (modalNameValue) {
+        modalNameValue.textContent = character.name;
+      }
+
+      if (modalStatusValue) {
+        modalStatusValue.textContent = `${character.status}`;
+      }
+
+      modalBody.innerHTML = "";
+      modalBody.appendChild(modalCard);
+
+      modal.showModal();
+    } catch (error) {
+      alert("Failed to load character details. Please try again.");
+    }
+
     return;
   }
 
-  event.stopPropagation();
-
-  try {
-    const character = await getCharacter(article.dataset.characterId);
-
-    const modalCard = modalTemplate.content.cloneNode(true);
-
-    const modalImage = modalCard.querySelector('[data-role="image"]');
-    const modalNameValue = modalCard.querySelector('[data-role="nameValue"]');
-    const modalStatusValue = modalCard.querySelector(
-      '[data-role="statusValue"]'
-    );
-
-    if (modalImage) {
-      modalImage.src = character.image;
-      modalImage.alt = character.name;
-    }
-
-    if (modalNameValue) {
-      modalNameValue.textContent = character.name;
-    }
-
-    if (modalStatusValue) {
-      modalStatusValue.textContent = `${character.status}`;
-    }
-
-    modalBody.innerHTML = "";
-
-    modalBody.appendChild(modalCard);
-
-    modal.showModal();
-  } catch (error) {
-    alert("Failed to load character details. Please try again.");
-  }
-});
-
-closeModalButton.addEventListener("click", () => {
-  modal.close();
-});
-
-window.addEventListener("click", (event) => {
-  if (event.target === modal) {
+  if (target === modal || target.closest("#closeModal")) {
     modal.close();
+
+    return;
+  }
+
+  if (target.closest("header h1.title")) {
+    topFunction();
+
+    return;
+  }
+
+  if (target.closest(".upButton")) {
+    topFunction();
   }
 });
 
@@ -225,12 +229,6 @@ window.addEventListener("scroll", () => {
     loadPage(currentPage + 1, { loadMore: true });
   }
 });
-
-goHome.addEventListener("click", () => {
-  topFunction();
-});
-
-upButton.addEventListener("click", topFunction);
 
 loadPage(currentPage);
 topFunction();
